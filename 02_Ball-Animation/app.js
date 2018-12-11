@@ -63,9 +63,16 @@ function init() {
 
     document.querySelector("#ball-animation").appendChild(renderer.domElement)
 
+    let step = 0;
     function renderScene() {
         stats.update()
 
+        // Let the ball bounce!
+        step += 0.04
+        sphere.position.x = 20 + 10*(Math.cos(step))
+        sphere.position.y = 2 + 10*Math.abs(Math.sin(step))
+
+        // Rotate Cube
         cube.rotation.x += 0.02
         cube.rotation.y += 0.02
         cube.rotation.z += 0.02
