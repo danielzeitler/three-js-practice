@@ -7,6 +7,8 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.shadowMap.enabled = true;
 
+    let controls = new THREE.OrbitControls(camera)
+
     createBoundingWall(scene)
     createGroundPlane(scene)
     createHouse(scene)
@@ -29,6 +31,15 @@ function init() {
     camera.position.set(-30, 40, 30)
     camera.lookAt(scene.position)
 
+    controls.update()
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update()
+        renderer.render(scene, camera)
+    }
+
+    animate()
     document.getElementById('threejs-garden').appendChild(renderer.domElement)
     renderer.render(scene, camera)
 }
@@ -101,8 +112,8 @@ function createHouse(scene) {
 }
 
 function createTree(scene) {
-    let trunkGeometry = new THREE.CubeGeometry(1, 5, 1)
-    let leavesGeometry = new THREE.SphereGeometry(5, 2, 10)
+    let trunkGeometry = new THREE.CubeGeometry(1, 6, 1)
+    let leavesGeometry = new THREE.SphereGeometry(5, 10)
 
     let trunkMesh = new THREE.MeshLambertMaterial({
         color: 0x8b4513
