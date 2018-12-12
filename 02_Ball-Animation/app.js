@@ -1,6 +1,6 @@
 function init() {
     let stats = initStats()
-    
+
     let scene = new THREE.Scene()
     let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
     
@@ -31,7 +31,7 @@ function init() {
         color: 0xffb3ba
     })
     let cube = new THREE.Mesh(cubeGeometry, cubeMesh)
-    cube.position.set(-4, 2, 0)
+    cube.position.set(-4, 5, 0)
     cube.castShadow = true
     scene.add(cube)
 
@@ -63,19 +63,30 @@ function init() {
 
     document.querySelector("#ball-animation").appendChild(renderer.domElement)
 
+    // Adding dat.gui to control rotation and bouncing animation
+    let controls = new function() {
+        this.rotationSpeed = 0.02
+        this.bouncingSpeed = 0.03
+    }
+
+    let gui = new dat.GUI()
+    gui.add(controls, 'rotationSpeed', 0, 0.5)
+    gui.add(controls, 'bouncingSpeed', 0, 0.5)
+
+
     let step = 0;
     function renderScene() {
         stats.update()
 
         // Let the ball bounce!
-        step += 0.04
         sphere.position.x = 20 + 10*(Math.cos(step))
         sphere.position.y = 2 + 10*Math.abs(Math.sin(step))
-
+        
         // Rotate Cube
-        cube.rotation.x += 0.02
-        cube.rotation.y += 0.02
-        cube.rotation.z += 0.02
+        cube.rotation.x += controls.rotationSpeed
+        cube.rotation.y += controls.rotationSpeed
+        cube.rotation.z += controls.rotationSpeed
+        step += controls.bouncingSpeed
 
         requestAnimationFrame(renderScene)
         renderer.render(scene, camera)
