@@ -1,11 +1,14 @@
+let camera;
+let scene;
+let renderer;
+
 function init() {
     let stats = initStats()
 
-    let scene = new THREE.Scene()
-    let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
+    scene = new THREE.Scene()
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
+    renderer = new THREE.WebGLRenderer()
     
-
-    let renderer = new THREE.WebGLRenderer()
     renderer.shadowMap.enabled = true
     renderer.setClearColor(new THREE.Color(0xbaffc9))
     renderer.setSize(window.innerWidth, window.innerHeight)
@@ -62,6 +65,16 @@ function init() {
     camera.lookAt(scene.position)
 
     document.querySelector("#ball-animation").appendChild(renderer.domElement)
+    
+    // Resize on browser size change
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth, window.innerHeight)
+    })
+
+    let trackballControls = initTrackballControls(camera, renderer)
+    let clock = new THREE.Clock()
 
     // Adding dat.gui to control rotation and bouncing animation
     let controls = new function() {
@@ -73,10 +86,12 @@ function init() {
     gui.add(controls, 'rotationSpeed', 0, 0.5)
     gui.add(controls, 'bouncingSpeed', 0, 0.5)
 
-
     let step = 0;
     function renderScene() {
         stats.update()
+
+        // Trackball Controls
+        trackballControls.update(clock.getDelta())
 
         // Let the ball bounce!
         sphere.position.x = 20 + 10*(Math.cos(step))
