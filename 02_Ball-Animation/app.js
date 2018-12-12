@@ -8,7 +8,7 @@ function init() {
     scene = new THREE.Scene()
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
     renderer = new THREE.WebGLRenderer()
-    
+
     renderer.shadowMap.enabled = true
     renderer.setClearColor(new THREE.Color(0xbaffc9))
     renderer.setSize(window.innerWidth, window.innerHeight)
@@ -66,7 +66,7 @@ function init() {
 
     document.querySelector("#ball-animation").appendChild(renderer.domElement)
     
-    // Resize on browser size change
+    // Resize render on browser size change
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight
         camera.updateProjectionMatrix()
