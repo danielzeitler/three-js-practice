@@ -13,6 +13,13 @@ function init() {
     renderer.setClearColor(new THREE.Color(0x000000))
     renderer.setSize(window.innerWidth, window.innerHeight)
 
+    // add fog
+    scene.fog = new THREE.Fog(0xFFFFFF, 0.015, 100)
+    scene.overrideMaterial = new THREE.MeshLambertMaterial({
+        color: 0xFFFFFF
+    })
+
+    // Helper for the x, y, z axes
     let axesHelper = new THREE.AxesHelper(20)
     scene.add(axesHelper)
 
