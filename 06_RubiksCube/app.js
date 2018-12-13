@@ -33,7 +33,6 @@ function init() {
     group.scale.copy(new THREE.Vector3(2,2,2))
     scene.add(group)
 
-
     camera.position.set(0, 80, 80)
     camera.lookAt(scene.position)
 
@@ -75,8 +74,19 @@ function initLight(scene) {
     spotLight.position.set(35, 30, 0)
 
     let spotLightHelper = new THREE.SpotLightHelper(spotLight)
-    // scene.add(spotLightHelper)
+    scene.add(spotLightHelper)
 
     scene.add(spotLight)
 }
+
+
+
+
+
+
+
+
+
+
+
 

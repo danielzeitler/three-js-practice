@@ -29,14 +29,29 @@ function init() {
 
     // Materials
     let sphereGeo = new THREE.SphereGeometry(5, 20, 20)
-    let sphereMaterial = new THREE.MeshNormalMaterial({flatShading: false})
+    let sphereMaterial = new THREE.MeshPhongMaterial({
+        color: 0xFF0000,
+        specular: 0xFFFFFF,
+        shininess: 70
+    })
     let sphere = new THREE.Mesh(sphereGeo, sphereMaterial)
     sphere.position.set(0, 7, 0)
     scene.add(sphere)
-    console.log(sphereMaterial.uuid)
+
+    let sphereGeo1 = new THREE.SphereGeometry(5, 20, 20)
+    let sphereMaterial1 = new THREE.MeshStandardMaterial({
+        color: 0x2194ce,
+        roughness: 0.7,
+        metalness: 0.84,
+    })
+    let sphere1 = new THREE.Mesh(sphereGeo1, sphereMaterial1)
+    sphere1.position.set(-20, 7, 0)
+    scene.add(sphere1)
+
+
 
     // add Spotlight
-    let spotLight = new THREE.SpotLight(0xFFFFFF, /* 1.2, 150, 120 */)
+    let spotLight = new THREE.SpotLight(0xFFFFFF, 1.2, 150, 120)
     spotLight.position.set(-40, 60, -10)
     spotLight.castShadow = true
     scene.add(spotLight)
@@ -45,7 +60,7 @@ function init() {
     let ambienLight = new THREE.AmbientLight(0x3c3c3c)
     scene.add(ambienLight)
 
-    camera.position.set(-35, 15, 30)
+    camera.position.set(-45, 50, 50)
     camera.lookAt(scene.position)
 
     document.querySelector('#cube-scene').appendChild(renderer.domElement)
