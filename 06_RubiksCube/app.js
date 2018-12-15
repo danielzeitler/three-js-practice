@@ -4,6 +4,7 @@ function init() {
 
     let renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.vr.enabled = true
 
     let axesHelper = new THREE.AxesHelper(20)
     scene.add(axesHelper)
@@ -55,9 +56,9 @@ function init() {
     function render() {
         trackBallControls.update(clock.getDelta())
 
-        group.rotation.x += 0.01
-        group.rotation.y += 0.01
-        group.rotation.z += 0.01
+        group.rotation.x += 0.001
+        group.rotation.y += 0.001
+        group.rotation.z += 0.001
 
         requestAnimationFrame(render)
         renderer.render(scene, camera)
@@ -74,19 +75,61 @@ function initLight(scene) {
     spotLight.position.set(35, 30, 0)
 
     let spotLightHelper = new THREE.SpotLightHelper(spotLight)
-    scene.add(spotLightHelper)
+    // scene.add(spotLightHelper)
 
     scene.add(spotLight)
 }
 
 
+navigator.getVRDevices().then(function(devices) {
+    for (var i = 0; i < devices.length; ++i) {
+      if (devices[i] instanceof HMDVRDevice) {
+        gHMD = devices[i];
+        break;
+      }
+    }
+    if (gHMD) {
+      for (var i = 0; i < devices.length; ++i) {
+        if (devices[i] instanceof PositionSensorVRDevice
+             && devices[i].hardwareUnitId === gHMD.hardwareUnitId) {
+          gPositionSensor = devices[i];
+          break;
+        }
+      }
+    }
+  });
+
+  function getVRDisplays ( onDisplay ) {
+ 
+    if ( 'getVRDisplays' in navigator ) {
+ 
+      navigator.getVRDisplays()
+        .then( function ( displays ) {
+          onDisplay( displays[ 0 ] );
+        } );
+ 
+    }
+ 
+  };
 
 
+getVRDisplay(function(display) {
+    renderer.vr.setDevice(display);
+});
 
-
-
-
-
-
-
-
+function checkAvailability () {
+    return new Promise( function( resolve, reject ) {
+      if ( navigator.getVRDisplays !== undefined ) {
+        navigator.getVRDisplays().then( function ( displays ) {
+          if ( displays.length === 0 ) {
+            reject('no vr');
+          } else {
+            resolve();
+          }
+        });
+      } else {
+        reject('no vr');
+      }
+    } );
+  }
+  
